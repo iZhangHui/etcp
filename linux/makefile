@@ -1,7 +1,7 @@
 # Initialization for Linux systems
 
 all :
-	patch ../smb.c smb.pch
-	patch ../icmp.c icmp.pch
+	patch -d ../ < smb.pch
+	patch -d ../ < icmp.pch
 	cp ../bsd/skel.h ..
 	cp ../bsd/makefile.bsd ../makefile
