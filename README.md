@@ -8,6 +8,21 @@ Effective TCP/IP Programming
 - The source code of the Book [Effective TCP/IP Programming](http://home.netcom.com/~jsnader/)
 by Jon Snader imported from http://home.netcom.com/~jsnader/etcpsrc.zip.
 
+## Build
+In order to compile the code, first change into the subdirectory that
+most closely describes your system (bsd, solaris, linux, win), and run
+make.  For UNIX systems, this can be either the system make or gmake.
+For windows, use nmake.  This will perform whatever initializations are
+appropriate for your system. Next, change back up to the parent (source)
+directory and run make again. That will build the libraries and test programs.
+
+Take linux system for example:
+```
+cd linux
+make
+cd ../
+make
+```
 
 ## Contents
 
