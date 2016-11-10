@@ -31,7 +31,7 @@ extern char *program_name;		/* for error */
 
 #ifdef __SVR4
 #define bzero(b,n)	memset( ( b ), 0, ( n ) )
-#endif 
+#endif
 
 typedef void ( *tofunc_t )( void * );
 
@@ -52,5 +52,5 @@ void *smballoc( void );
 void smbfree( void * );
 void smbsend( SOCKET, void * );
 void *smbrecv( SOCKET );
-void set_address( char *, char *, struct sockaddr_in *, char * );
+// void set_address( char *, char *, struct sockaddr_in *, char * );
 #endif  /* __ETCP_H__ */
