@@ -1,0 +1,13 @@
+#! /usr/bin/perl5
+use Socket;
+$host = shift || 'localhost';
+$port = shift || 'echo';
+$port = getservbyname( $port, 'udp' ) if $port =~ /\D/;
+$peer = sockaddr_in( $port, inet_aton( $host ) );
+socket( S, PF_INET, SOCK_DGRAM, 0 ) || die "socket failed $!";
+while ( $line = <STDIN> )
+{
+	defined( send( S, $line, 0, $peer ) ) || die "send failed $!";
+	defined( recv( S, $line, 120, 0 ) ) || die "recv failed $!";
+	print $line;
+}

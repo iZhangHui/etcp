@@ -1,0 +1,21 @@
+#! /usr/bin/perl5
+$tcpdump = "/usr/sbin/tcpdump";
+open( TCPD, "$tcpdump @ARGV |" ) ||
+	die "couldn't start tcpdump: \$!\\n";
+$| = 1;
+while ( <TCPD> )
+{
+	if ( /^\t/ )
+	{
+		chop;
+		$str = $_;
+		$str =~ tr / \t//d;
+		$str = pack "H*" , $str;
+		$str =~ tr/\x0-\x1f\x7f-\xff/./;
+		printf "\t%-40s\t%s\n", substr( $_, 4 ), $str;
+	}
+	else
+	{
+		print;
+	}
+}

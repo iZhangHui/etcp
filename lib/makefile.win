@@ -1,0 +1,17 @@
+RM = del
+LIBFCNS =	error.obj readcrlf.obj readline.obj readn.obj readvrec.obj \
+		set_address.obj tcp_client.obj tcp_server.obj udp_client.obj \
+		udp_server.obj
+.c.obj :
+	cl -c -Zi -I \Progra~1\DevStudio\Vc\Include -I .. $< -o $@
+
+all : etcp.lib
+
+etcp.lib : $(LIBFCNS)
+	-@$(RM) etcp.lib
+	lib -OUT:etcp.lib $(LIBFCNS)
+
+clean :
+	-@$(RM) *.obj
+	-@$(RM) etcp.lib
+	-@$(RM) *.pdb

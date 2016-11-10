@@ -1,0 +1,19 @@
+#! /usr/bin/perl5
+use Socket;
+$port = shift;
+$port = getservbyname( $port, 'tcp' ) if $port =~ /\D/;
+die "Invalid port" unless $port;
+socket( S, PF_INET, SOCK_STREAM, 0 ) || die "socket: $!";
+setsockopt( S, SOL_SOCKET, SO_REUSEADDR, pack( 'l', 1 ) ) ||
+	die "setsockopt: $!";
+bind( S, sockaddr_in( $port, INADDR_ANY ) ) || die "bind: $!";
+listen( S, SOMAXCONN );
+for( ; accept( S1, S ); close( S1 ) )
+{
+	while ( TRUE )
+	{
+		defined( recv( S1, $line, 120, 0 ) ) || die "recv: $!";
+		last if length( $line ) == 0;
+		defined( send( S1, $line, 0 ) ) || die "send: $!";
+	}
+}

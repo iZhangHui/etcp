@@ -1,0 +1,187 @@
+LIBPATH = "\Progra~1\DevStudio\VC\lib"
+LIBS = Ws2_32.lib
+ETCPLIB = "lib\etcp.lib"
+CP = copy
+RM = del
+RD = rmdir
+MAKE = nmake
+EXECUTABLES = vrs vrc  udpclient \
+	  hello helloc udphello udphelloc tcpsource tcpsink \
+	  udpsink udpsource tcprw count \
+	  hb_server hb_client hb_server2 hb_client2 keep telemetrys \
+	  telemetryc extsys \
+	  tselect badserver vrcvw \
+	  smbs smbc endian udpconnserv icmp
+
+.c.obj :
+	cl -c -Zi -I \Progra~1\DevStudio\Vc\Include -I . $< -o $@
+
+all	  : $(ETCPLIB) $(EXECUTABLES)
+
+lib\etcp.lib  :
+	cd lib
+	$(MAKE) -f makefile.win
+	cd ..
+
+vrs : vrs.obj $(ETCPLIB) wincompat.obj
+	link -DEBUG -LIBPATH:$(LIBPATH) -OUT:vrs.exe vrs.obj $(ETCPLIB)\
+	wincompat.obj $(LIBS)
+
+vrc : vrc.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:vrc.exe vrc.obj $(ETCPLIB)\
+	wincompat.obj $(LIBS)
+
+udpclient : udpclient.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:udpclient.exe udpclient.obj \
+	wincompat.obj $(ETCPLIB) $(LIBS)
+
+hello	: hello.obj wincompat.obj wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:hello.exe hello.obj  wincompat.obj\
+	$(LIBS)
+
+helloc	: helloc.obj wincompat.obj wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:helloc.exe helloc.obj wincompat.obj \
+	$(LIBS)
+
+udphello	: udphello.obj wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:udphello.exe udphello.obj \
+	wincompat.obj $(LIBS)
+
+udphelloc	: udphelloc.obj wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:udphelloc.exe udphelloc.obj \
+	wincompat.obj $(LIBS)
+
+tcpsource	: tcpsource.obj wincompat.obj getopt.obj
+	link -LIBPATH:$(LIBPATH) -OUT:tcpsource.exe tcpsource.obj \
+	getopt.obj wincompat.obj $(LIBS)
+
+tcpsink	: tcpsink.obj wincompat.obj getopt.obj
+	link -LIBPATH:$(LIBPATH) -OUT:tcpsink.exe tcpsink.obj \
+	getopt.obj wincompat.obj $(LIBS)
+
+udpsource	: udpsource.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:udpsource.exe udpsource.obj $(ETCPLIB) \
+	getopt.obj wincompat.obj $(LIBS)
+
+udpsink	: udpsink.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:udpsink.exe udpsink.obj $(ETCPLIB) \
+	getopt.obj wincompat.obj $(LIBS)
+
+tcprw : tcprw.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:tcprw.exe tcprw.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+count : count.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:count.exe count.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+hb_server : hb_server.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:hb_server.exe hb_server.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+hb_client : hb_client.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:hb_client.exe hb_client.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+hb_server2 : hb_server2.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:hb_server2.exe hb_server2.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+hb_client2 : hb_client2.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:hb_client2.exe hb_client2.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+keep : keep.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:keep.exe keep.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+telemetrys : telemetrys.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:telemetrys.exe telemetrys.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+telemetryc : telemetryc.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:telemetryc.exe telemetryc.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+extsys : extsys.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:extsys.exe extsys.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+tselect : tselect.c $(ETCPLIB) etcp.h wincompat.obj
+	cl -I /Progra~1/DevStudio/Vc/Include -I . -DTEST \
+	tselect.c $(ETCPLIB) wincompat.obj $(LIBS) -link -LIBPATH:$(LIBPATH)
+
+badserver : badserver.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:badserver.exe badserver.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+vrcvw : vrcvw.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:vrcvw.exe vrcvw.obj $(ETCPLIB) \
+	wincompat.obj $(LIBS)
+
+smbs : smbs.obj smb.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:smbs.exe smbs.obj $(ETCPLIB) \
+	wincompat.obj smb.obj $(LIBS)
+
+smbc : smbc.obj smb.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:smbc.exe smbc.obj $(ETCPLIB) \
+	wincompat.obj smb.obj $(LIBS)
+
+endian : endian.obj
+	link -LIBPATH:$(LIBPATH) -OUT:endian.exe endian.obj
+
+udpconnserv : udpconnserv.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:udpconnserv.exe udpconnserv.obj $(ETCPLIB) \
+	wincompat.obj  $(LIBS)
+
+icmp : icmp.obj $(ETCPLIB) wincompat.obj
+	link -LIBPATH:$(LIBPATH) -OUT:icmp.exe icmp.obj $(ETCPLIB) \
+	wincompat.obj  $(LIBS)
+
+vrs.obj vrc.obj $(ETCPLIB) : etcp.h skel.h
+udpclient.obj tcpsink.obj tcpsource.obj : etcp.h skel.h
+udpsource.obj udpsink.obj keep.obj: etcp.h skel.h
+telemetrys.obj telemetryc.obj : etcp.h skel.h
+extsys.obj tselect.obj : etcp.h skel.h
+badserver.obj smb.obj smbs.obj smbc.obj : etcp.h skel.h
+udpconn1.obj udpconn2.obj udpconnserv.obj: etcp.h skel.h
+hb_server.obj hb_client.obj hb_server2.obj : etcp.h skel.h heartbeat.h
+hb_client2.obj: etcp.h skel.h heartbeat.h
+endian.obj badclient.obj icmp.obj : etcp.h skel.h
+goodserver.obj erx.obj : etcp.h skel.h
+
+init :
+	-mkdir sys
+	-mkdir netinet
+	-mkdir arpa
+	$(CP) win\unistd.h .
+	$(CP) win\ip.h netinet
+	copy win\nf netdb.h
+	copy win\nf sys\socket.h
+	copy win\nf sys\wait.h
+	copy win\nf sys\time.h
+	copy win\nf sys\resource.h
+	copy win\nf netinet\in.h
+	copy win\nf netinet\in_systm.h
+	copy win\nf netinet\ip_icmp.h
+	copy win\nf netinet\udp.h
+	copy win\nf arpa\inet.h
+
+clean :
+	-$(RM) *.obj
+	-$(RM) *.exe
+	-$(RM) unistd.h
+	-$(RM) netdb.h
+	-$(RM) sys\*.h
+	-$(RM) netinet\*.h
+	-$(RM) arpa\*.h
+	-$(RD) sys
+	-$(RD) netinet
+	-$(RD) arpa
+
+cleanlib :
+	cd lib
+	$(MAKE) -fmakefile.win clean
+	cd ..
+
+cleanall : clean cleanlib

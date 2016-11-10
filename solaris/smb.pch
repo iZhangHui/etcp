@@ -1,0 +1,24 @@
+*** smb.c.orig	Sun Apr 30 16:39:02 2000
+--- smb.c	Sun Apr 30 16:41:04 2000
+***************
+*** 69,75 ****
+  
+  void init_smb( int init_freelist )
+  {
+! 	union semun arg;
+  	int smid;
+  	int i;
+  	int rc;
+--- 69,80 ----
+  
+  void init_smb( int init_freelist )
+  {
+! 	union semun
+! 	{
+! 		int val;
+! 		struct semid_ds *buf;
+! 		unsigned short *array;
+! 	} arg;
+  	int smid;
+  	int i;
+  	int rc;

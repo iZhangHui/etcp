@@ -1,0 +1,14 @@
+*** unix/skel.h	Fri Apr 28 06:35:29 2000
+--- skel.h	Tue May  2 07:34:37 2000
+***************
+*** 14,18 ****
+--- 14,22 ----
+  #define isvalidsock(s)	( ( s ) >= 0 )
+  
+  typedef int SOCKET;
++ typedef unsigned int u_int32_t;
+  
++ void bzero( void *, size_t );
++ int daemon( int, int );
++ 
+  #endif  /* __SKEL_H__ */

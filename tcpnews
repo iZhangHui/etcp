@@ -1,0 +1,22 @@
+#! /usr/bin/perl5
+use Socket;
+$host = inet_aton( 'nntp.ix.netcom.com') || die "host: $!";
+$port = getservbyname( 'nntp', 'tcp' ) || die "bad port";
+socket( S, PF_INET, SOCK_STREAM, 0 ) || die "socket: $!";
+connect( S, sockaddr_in( $port, $host ) ) || die "connect: $!";
+select( S );
+$| = 1;
+select( STDOUT );
+print S "group comp.protocols.tcp-ip\r\n";
+while ( $line = <S> )
+{
+	last if $line =~ /^211/;
+}
+($rc, $total, $start, $end ) = split( /\s/, $line );
+print S "xover $start-$end\nquit\r\n";
+while ( $line = <S> )
+{
+	( $no, $sub, $auth, $date ) = split( /\t/, $line );
+	print "$no, $sub, $date\n" if $sub =~ /TCP|UDP/;
+}
+close( S );

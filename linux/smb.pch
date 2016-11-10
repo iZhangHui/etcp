@@ -1,0 +1,36 @@
+--- source/smb.c	Tue May  2 19:02:36 2000
++++ smb.c	Sun Nov 19 06:11:50 2000
+@@ -69,6 +69,14 @@
+
+ void init_smb( int init_freelist )
+ {
++    union semun
++    {
++        int val;
++        struct semid_ds *buf;
++        unsigned short int *array;
++        struct seminfo *__buf;
++    } ;
++
+ 	union semun arg;
+ 	int smid;
+ 	int i;
+@@ -78,8 +86,7 @@
+ 	lkbuf.sem_flg = SEM_UNDO;
+ 	unlkbuf.sem_op = 1;
+ 	unlkbuf.sem_flg = SEM_UNDO;
+-	mutex = semget( MUTEX_KEY, 1,
+-		IPC_EXCL | IPC_CREAT | SEM_R | SEM_A );
++	mutex = semget( MUTEX_KEY, 1, IPC_EXCL | IPC_CREAT | 0600 );
+ 	if ( mutex >= 0 )
+ 	{
+ 		arg.val = 1;
+@@ -89,7 +96,7 @@
+ 	}
+ 	else if ( errno == EEXIST )
+ 	{
+-		mutex = semget( MUTEX_KEY, 1, SEM_R | SEM_A );
++		mutex = semget( MUTEX_KEY, 1, 0600 );
+ 		if ( mutex < 0 )
+ 			error( 1, errno, "semctl failed" );
+ 	}

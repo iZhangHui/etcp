@@ -1,0 +1,10 @@
+--- ../tips/source/icmp.c	Sat Apr 22 13:44:19 2000
++++ ./icmp.c	Sun Apr 23 11:55:29 2000
+@@ -4,6 +4,7 @@
+ #include <netinet/in.h>
+ #include <netinet/ip.h>
+ #include <netinet/ip_icmp.h>
++#define __FAVOR_BSD
+ #include <netinet/udp.h>
+ #include "etcp.h"
+ 

@@ -1,0 +1,21 @@
+This is the source code for the skeletons, library routines, and example
+programs from _Effective TCP/IP Programming_.  I have compiled and tested
+this on FreeBSD, Solaris, Linux, and Windows 98.  If you compile it for
+a different system and have to make any non-trivial changes, I would
+like to know so that I can include them with the distribution.
+
+In order to compile the code, first change into the subdirectory that
+most closely describes your system (bsd, solaris, linux, win), and run
+make.  For UNIX systems, this can be either the system make or gmake.
+For windows, use nmake.  This will perform whatever initializations are
+appropriate for your system.  Next, change back up to the parent (source)
+directory and run make again.  That will build build the libraries and
+test programs.
+
+Most systems will generate a few trivial warnings for the compilations
+of the example programs.  You can ignore these.  The library code compiles
+without diagnostics on all the systems that I have tested.
+
+The TCP/IP stack that comes with Win98 does *not* run icmp correctly.
+
+Jon Snader
