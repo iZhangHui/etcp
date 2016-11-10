@@ -1,0 +1,135 @@
+==================================
+A reader points out that since the callback routine is dispatched before
+the tevent_t structure is removed from the active list, it is possible
+for the callback to do an untimeout, which would remove the structure.
+Then when the callback returned, the next structure would be removed or
+a segment violation would occur if there were no further active timers.
+
+Fix this by removing line 23
+
+	active->func( active->arg );
+
+and add the line
+
+	tp->func( tp->arg );
+
+after line 27.
+
+Page 163, line 11
+============
+Tip 20 in another... -> Tip 19 in another...
+
+Page 177, line 23
+=================
+than the number that do. -> than the number that don't.
+
+Page 185, Figure 3.41, line 4
+=============================
+int len; -> int len = sizeof( err );
+
+The ``length'' argument to getsockopt is a value/result parameter and
+should be initialized to the size of the receiving argument, err.
+
+Page 194, Figure 3.46, line 35
+==============================
+error( 1, errno, "semctl failed" ); -> error( 1, errno, "semget failed" );
+
+Page 194, Figure 3.46, line 38
+==============================
+error( 1, errno, "semctl failed" ); ->
+error( 1, errno, "semget(IPC_CREAT) failed" );
+
+Page 196, lines 1-2
+===================
+A reader points out that specifying a NULL pointer for lpsa does *not*
+specify ``no security test,'' for the mutex.  Instead a default set
+of security parameters are associated with the mutex.  In order to
+create a mutex without security parameters, it is necessary to create
+a ``null DACL.''  See Microsoft Knowledge Base articles 193073 and
+106378 for details.
+
+Page 213, line -6
+=================
+new socket in its second parameter (S1). ->
+new socket in its first parameter (S1).
+
+Page 242, line -15
+==================
+tar -cf - directory | ttcp -t A -> tar -cf - directory | ttcp -t B
+
+Page 255, line -11
+==================
+call will completely closes the... -> call completely closes the...
+
+Page 258, Figure 4.23 (icmp.c)
+==============================
+The icmp program, as written, does not work correctly on Windows machines.
+The following patch improves things, but I still had problems under Win98.
+The reader who contributed the patch reports that it runs correctly under
+NT.
+
+145a146
+> 	struct sockaddr_in local;
+153a155,161
+>
+> 	local.sin_family = AF_INET;
+> 	local.sin_port = htons( 0 );
+> 	local.sin_addr.s_addr = htonl( INADDR_ANY );
+> 	rc = bind( s, ( struct sockaddr * )&local, sizeof( local ) );
+> 	if ( rc < 0 )
+> 		error( 1, errno, "bind failed" );
+
+Page 261, line -6
+=================
+...we examine the imcp_code field... -> ...we examine the icmp_code field...
+
+*******************************************************************************
+*  The following errata were corrected in the second printing                 *
+*******************************************************************************
+
+
+Page 24, Line 25
+================
+...there are 16,384 host addresses... -> ...there are 65,534 host addresses...
+
+Page 33, 8 Lines from bottom
+============================
+The static and polled... ->  The static and pooled...
+
+Page 91, Line 1
+===============
+Bad line break.
+
+Page 100, Figure 2.56, line 21
+==============================
+printf( "Packet %d has %ld values in %d bytes\n", ->
+	printf( "Packet %d has %d values in %d bytes\n",
+It's hard to get this right for all systems without making system dependent
+patches.  The problem is that some systems, such as FreeBSD, define ntohl
+as returning a long, whereas others, such as Solaris, define it correctly
+as returning an unsigned 32 bit integer.  Since all systems return a
+32 bit quantity, it makes sense to define the printf format specifier as
+`d' rather than `ld'.
+
+Page 274, Figure A.1, line 32
+=============================
+int readn( int, char *, size_t ) -> int readn( SOCKET, char *, size_t );
+
+Page 274, Figure A.1, line 33
+=============================
+int readvrec( int, char *, size_t ) -> int readvrec( SOCKET, char *, size_t );
+
+Page 274, Figure A.1, line 34
+=============================
+int readcrlf( int, char *, size_t ) -> int readcrlf( SOCKET, char *, size_t );
+
+Page 274, Figure A.1, line 35
+=============================
+int readline( int, char *, size_t ) -> int readline( SOCKET, char *, size_t );
+
+Page 277, Figure B.1, lines 4 and 5
+===================================
+These two lines should be switched in order to compile without errors.
+
+
+Last update: 02/01/03
