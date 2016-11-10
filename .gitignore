@@ -6,7 +6,6 @@
 
 # Precompiled Headers
 *.gch
-*.pch
 
 # Libraries
 *.lib
